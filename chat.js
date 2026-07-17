@@ -264,7 +264,7 @@ const modelSelect = document.getElementById("modelSelect");
 document.getElementById("settingsBtn").addEventListener("click", () => {
   const s = loadSettings();
   apiKeyInput.value = s.apiKey || "";
-  modelSelect.value = s.model || "gemini-2.5-flash";
+  modelSelect.value = s.model || "gemini-flash-latest";
   settingsModal.showModal();
 });
 document.getElementById("closeSettingsBtn").addEventListener("click", () => settingsModal.close());
