@@ -29,9 +29,9 @@ function saveBooks(books) {
 function loadSettings() {
   try {
     const raw = localStorage.getItem(SETTINGS_KEY);
-    return raw ? JSON.parse(raw) : { apiKey: "", model: "gemini-2.5-flash" };
+    return raw ? JSON.parse(raw) : { apiKey: "", model: "gemini-flash-latest" };
   } catch (e) {
-    return { apiKey: "", model: "gemini-2.5-flash" };
+    return { apiKey: "", model: "gemini-flash-latest" };
   }
 }
 
