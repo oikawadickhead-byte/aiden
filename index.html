@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Stacks — with Aiden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400..600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ===== Header ===== -->
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-mark">§</span>
+      <div class="brand-text">
+        <h1>The Stacks</h1>
+        <p class="brand-sub">a catalog, kept by Aiden</p>
+      </div>
+    </div>
+    <button class="btn-icon" id="settingsBtn" title="Settings" aria-label="Open settings">⚙</button>
+  </header>
+
+  <!-- ===== Main layout ===== -->
+  <div class="app-body">
+
+    <!-- ---- Library pane ---- -->
+    <main class="library-pane">
+      <nav class="shelf-tabs" id="shelfTabs" role="tablist" aria-label="Book lists"></nav>
+
+      <div class="shelf-toolbar">
+        <p class="shelf-count" id="shelfCount">0 books</p>
+        <button class="btn-primary" id="addBookBtn">+ Add a book</button>
+      </div>
+
+      <section class="card-grid" id="cardGrid"></section>
+
+      <div class="empty-state" id="emptyState" hidden>
+        <p class="empty-title">This shelf is bare.</p>
+        <p class="empty-sub">Add a title, or ask Aiden to file one here.</p>
+      </div>
+    </main>
+
+    <!-- ---- Chat drawer ---- -->
+    <aside class="chat-pane" id="chatPane">
+      <div class="chat-header">
+        <div class="chat-title">
+          <span class="chat-dot" id="chatDot"></span>
+          <div>
+            <h2>Aiden</h2>
+            <p class="chat-sub" id="chatSub">your reading agent</p>
+          </div>
+        </div>
+        <button class="btn-icon chat-collapse" id="chatCollapseBtn" title="Collapse chat" aria-label="Collapse chat">›</button>
+      </div>
+
+      <div class="chat-log" id="chatLog"></div>
+
+      <form class="chat-input-row" id="chatForm">
+        <textarea id="chatInput" placeholder="Tell Aiden what you're thinking…" rows="1" autocomplete="off"></textarea>
+        <button type="submit" class="btn-send" id="chatSend" aria-label="Send message">↑</button>
+      </form>
+    </aside>
+
+    <button class="chat-reopen" id="chatReopenBtn" hidden aria-label="Open Aiden chat">✎ Ask Aiden</button>
+
+  </div>
+</div>
+
+<!-- ===== Add/Edit Book Modal ===== -->
+<dialog class="modal" id="bookModal">
+  <form method="dialog" class="modal-form" id="bookForm">
+    <h3 id="bookModalTitle">Add a book</h3>
+
+    <label class="field">
+      <span>Title</span>
+      <input type="text" id="fieldTitle" required>
+    </label>
+    <label class="field">
+      <span>Author</span>
+      <input type="text" id="fieldAuthor">
+    </label>
+    <div class="field-row">
+      <label class="field">
+        <span>Shelf</span>
+        <select id="fieldList"></select>
+      </label>
+      <label class="field">
+        <span>Pages</span>
+        <input type="number" id="fieldPages" min="1">
+      </label>
+    </div>
+    <label class="field" id="ratingField">
+      <span>Rating (out of 5)</span>
+      <input type="number" id="fieldRating" min="0" max="5" step="1">
+    </label>
+    <label class="field">
+      <span>Notes</span>
+      <textarea id="fieldNotes" rows="3" placeholder="Why you liked it, who you're waiting on, etc."></textarea>
+    </label>
+
+    <div class="modal-actions">
+      <button type="button" class="btn-ghost" id="deleteBookBtn" hidden>Delete</button>
+      <div class="modal-actions-right">
+        <button type="button" class="btn-ghost" id="cancelBookBtn">Cancel</button>
+        <button type="submit" class="btn-primary" id="saveBookBtn">Save</button>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<!-- ===== Settings Modal ===== -->
+<dialog class="modal" id="settingsModal">
+  <form method="dialog" class="modal-form">
+    <h3>Settings</h3>
+    <label class="field">
+      <span>Gemini API key</span>
+      <input type="password" id="apiKeyInput" placeholder="Paste your Gemini API key" autocomplete="off">
+    </label>
+    <p class="field-hint">
+      Stored only in this browser's local storage — never sent anywhere but Google's Gemini API.
+      Get a key at <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>.
+    </p>
+    <label class="field">
+      <span>Model</span>
+      <select id="modelSelect">
+        <option value="gemini-2.5-flash">gemini-2.5-flash (fast, default)</option>
+        <option value="gemini-2.5-pro">gemini-2.5-pro (higher quality)</option>
+      </select>
+    </label>
+    <div class="modal-actions">
+      <div class="modal-actions-right">
+        <button type="button" class="btn-ghost" id="closeSettingsBtn">Close</button>
+        <button type="submit" class="btn-primary" id="saveSettingsBtn">Save</button>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<script src="lists.js"></script>
+<script src="app.js"></script>
+<script src="chat.js"></script>
+</body>
+</html>
