@@ -153,7 +153,7 @@ async function callGemini(contents) {
   if (!settings.apiKey) {
     throw new Error("NO_KEY");
   }
-  const model = settings.model || "gemini-2.5-flash";
+  const model = settings.model || "gemini-flash-latest";
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
 
   const res = await fetch(url, {
@@ -226,7 +226,7 @@ async function sendToAiden(userText) {
       addSystemNoteToLog("Add a Gemini API key in Settings (⚙) to chat with Aiden.");
     } else {
       console.error(err);
-      addSystemNoteToLog("Something went wrong reaching Aiden. Check your API key and try again.");
+      addSystemNoteToLog("Error talking to Aiden: " + err.message);
     }
   } finally {
     chatDot.classList.remove("is-thinking");
