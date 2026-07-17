@@ -148,12 +148,23 @@ function addSystemNoteToLog(text) {
   chatLog.scrollTop = chatLog.scrollHeight;
 }
 
+// Models we currently offer in Settings. If a browser has an older/retired
+// model string saved (e.g. from before Google deprecated it), we fall back
+// to the default instead of sending a doomed request.
+const KNOWN_MODELS = ["gemini-flash-latest", "gemini-pro-latest", "gemini-3.5-flash"];
+const DEFAULT_MODEL = "gemini-flash-latest";
+
 async function callGemini(contents) {
   const settings = loadSettings();
   if (!settings.apiKey) {
     throw new Error("NO_KEY");
   }
-  const model = settings.model || "gemini-flash-latest";
+  let model = settings.model || DEFAULT_MODEL;
+  if (!KNOWN_MODELS.includes(model)) {
+    console.warn(`Saved model "${model}" is no longer offered — falling back to ${DEFAULT_MODEL}.`);
+    model = DEFAULT_MODEL;
+    saveSettings({ ...settings, model });
+  }
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
 
   const res = await fetch(url, {
@@ -224,6 +235,8 @@ async function sendToAiden(userText) {
   } catch (err) {
     if (err.message === "NO_KEY") {
       addSystemNoteToLog("Add a Gemini API key in Settings (⚙) to chat with Aiden.");
+    } else if (/404/.test(err.message) && /model/i.test(err.message)) {
+      addSystemNoteToLog("That model isn't available anymore. Open Settings (⚙) and re-save to switch to the current default — then try again.");
     } else {
       console.error(err);
       addSystemNoteToLog("Error talking to Aiden: " + err.message);
